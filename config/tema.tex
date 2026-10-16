@@ -17,6 +17,7 @@
 \dim_new:N \l__capa_logo_width_dim
 \dim_new:N \l__capa_autor_width_dim
 \dim_new:N \l__capa_avatar_dim
+\box_new:N \l__capa_imagem_box
 
 \int_new:N \l__capa_index_int
 \int_new:N \l__capa_total_int
@@ -59,7 +60,7 @@
 
 \cs_new_protected:Npn \__capa_instituicao:nnn #1#2#3
   {
-    \begin{minipage}[c][1.52cm][c]{\l__capa_logo_width_dim}
+    \begin{minipage}[c][1.18cm][c]{\l__capa_logo_width_dim}
       \centering
 
       \tl_if_blank:nTF {#3}
@@ -69,20 +70,12 @@
             {
               \includegraphics[
                 width=\dim_eval:n{\l__capa_logo_width_dim-0.24cm},
-                height=0.93cm,
+                height=1.05cm,
                 keepaspectratio
               ]{#3}
             }
             {\__capa_marca_padrao:n {#1}}
         }
-
-      \par\vspace{0.06cm}
-
-      {
-        \color{cinzaTexto}
-        \fontsize{7}{8}\selectfont
-        #2\par
-      }
     \end{minipage}
   }
 
@@ -116,45 +109,75 @@
     \node[
       text=azulPrincipal,
       font=\bfseries\large
-    ] at (foto.center)
+    ] at (0,0)
       {\tl_head:n {#1}};
   }
 
 
 \cs_new_protected:Npn \__capa_avatar:nn #1#2
   {
-    \begin{tikzpicture}[baseline=(foto.south)]
+    \begin{tikzpicture}[baseline=(base)]
 
-      \node[
-        circle,
-        minimum~size=\l__capa_avatar_dim,
-        inner~sep=0pt,
-        draw=azulPrincipal!25,
-        line~width=.6pt,
-        fill=azulClaro
-      ] (foto) at (0,0) {};
+      \coordinate (base) at
+        (0,-\dim_eval:n{.5\l__capa_avatar_dim});
+
+      \fill[azulClaro]
+        (0,0) circle
+        [radius=\dim_eval:n{.5\l__capa_avatar_dim}];
 
       \tl_if_blank:nTF {#2}
         {\__capa_avatar_fallback:n {#1}}
         {
           \IfFileExists{#2}
             {
-              \begin{scope}
-                \clip (foto.center) circle
-                  [radius=\dim_eval:n{.48\l__capa_avatar_dim}];
+              \hbox_set:Nn \l__capa_imagem_box
+                {\includegraphics[width=1cm]{#2}}
 
-                \node[inner~sep=0pt] at (foto.center)
+              \begin{scope}
+
+                \clip (0,0) circle
+                  [radius=\dim_eval:n{.5\l__capa_avatar_dim}];
+
+                \dim_compare:nNnTF
+                  {\box_ht:N \l__capa_imagem_box}
+                  >
+                  {\box_wd:N \l__capa_imagem_box}
                   {
-                    \includegraphics[
-                      width=\l__capa_avatar_dim,
-                      height=\l__capa_avatar_dim,
-                      keepaspectratio
-                    ]{#2}
-                  };
+                    \node[
+                      anchor=center,
+                      inner~sep=0pt,
+                      outer~sep=0pt
+                    ] at (0,0)
+                      {
+                        \includegraphics[
+                          width=\l__capa_avatar_dim
+                        ]{#2}
+                      };
+                  }
+                  {
+                    \node[
+                      anchor=center,
+                      inner~sep=0pt,
+                      outer~sep=0pt
+                    ] at (0,0)
+                      {
+                        \includegraphics[
+                          height=\l__capa_avatar_dim
+                        ]{#2}
+                      };
+                  }
+
               \end{scope}
             }
             {\__capa_avatar_fallback:n {#1}}
         }
+
+      \draw[
+        azulPrincipal!30,
+        line~width=.6pt
+      ]
+        (0,0) circle
+        [radius=\dim_eval:n{.5\l__capa_avatar_dim}];
 
     \end{tikzpicture}
   }
@@ -301,35 +324,40 @@
           {\__capa_logos:};
 
 
-        \node[
-          anchor=north,
-          text=azulPrincipal,
-          font=\fontsize{8}{9}\selectfont\bfseries
-        ] at
-          ([yshift=-2.20cm]current~page.north)
-          {\tl_use:N \g__capa_subtitulo_tl};
-
-
+        
         \node[anchor=north,text=azulEscuro] at
-          ([yshift=-2.60cm]current~page.north)
+          ([yshift=-2.36cm]current~page.north)
           {
             \parbox{.85\paperwidth}{
-              \centering
+            \centering
 
-              \int_compare:nNnTF
+            \int_compare:nNnTF
                 {\seq_count:N \g__capa_autores_seq} > {4}
-                {\fontsize{15}{19}\selectfont}
+                {\fontsize{13.5}{17.5}\selectfont}
                 {
-                  \int_compare:nNnTF
+                \int_compare:nNnTF
                     {\tl_count:N \g__capa_titulo_tl} > {72}
-                    {\fontsize{15}{19}\selectfont}
-                    {\fontsize{19}{23}\selectfont}
+                    {\fontsize{13.5}{17.5}\selectfont}
+                    {\fontsize{16}{20}\selectfont}
                 }
 
-              \bfseries
-              \tl_use:N \g__capa_titulo_tl\par
+            \bfseries
+            \tl_use:N \g__capa_titulo_tl\par
+
+            \tl_if_blank:VTF \g__capa_subtitulo_tl
+                {}
+                {
+                \vspace{.13cm}
+                {
+                    \color{azulPrincipal}
+                    \fontsize{9}{11}\selectfont
+                    \normalfont
+                    \tl_use:N \g__capa_subtitulo_tl\par
+                }
+                }
             }
-          };
+        };
+
 
 
         \int_compare:nNnT
