@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.7.3)  16 OCT 2026 20:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.7.3)  16 OCT 2026 20:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -656,20 +656,16 @@ File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \l__capa_autor_width_dim=\dimen319
 \l__capa_avatar_dim=\dimen320
 \l__capa_imagem_box=\box83
-\l__capa_index_int=\count370
-\l__capa_total_int=\count371
-\l__capa_colunas_int=\count372
+\l__capa_numero_autores_int=\count370
+\l__capa_indice_ref_int=\count371
 ) (./config/dados.tex)
 LaTeX Font Info:    Trying to load font information for T1+lmss on input line 13.
  (c:/texlive/2026/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (c:/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count373
-) (./main.aux
-Package babel Info: 'brazil' activates 'portuges' shorthands.
-(babel)             Reported on input line 8.
-)
+\l__color_backend_stack_int=\count372
+) (./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
@@ -727,16 +723,16 @@ LaTeX Font Info:    ... okay on input line 13.
 
 (c:/texlive/2026/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count374
+\scratchcounter=\count373
 \scratchdimen=\dimen321
 \scratchbox=\box84
-\nofMPsegments=\count375
-\nofMParguments=\count376
+\nofMPsegments=\count374
+\nofMParguments=\count375
 \everyMPshowfont=\toks50
-\MPscratchCnt=\count377
+\MPscratchCnt=\count376
 \MPscratchDim=\dimen322
-\MPnumerator=\count378
-\makeMPintoPDFobject=\count379
+\MPnumerator=\count377
+\makeMPintoPDFobject=\count378
 \everyMPtoPDFconversion=\toks51
 ) (c:/texlive/2026/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -745,7 +741,6 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package hyperref Info: Link coloring OFF on input line 13.
- (./main.out) (./main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
 
@@ -807,13 +802,16 @@ Dictionary: translator-months-dictionary, Language: English
 Dictionary: translator-numbers-dictionary, Language: English 
 ) (c:/texlive/2026/texmf-dist/tex/latex/translator/translator-theorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
-) (./main.nav)
+)
+Package babel Info: 'brazil' activates 'portuges' shorthands.
+(babel)             Reported on input line 13.
+ (./main.nav)
 Package babel Info: Main language set to 'brazil'.
 <imagens/logos/icmc.png, id=13, 77.088pt x 34.6896pt>
 File: imagens/logos/icmc.png Graphic file (type png)
 <use imagens/logos/icmc.png>
 Package pdftex.def Info: imagens/logos/icmc.png  used on input line 15.
-(pdftex.def)             Requested size: 66.38965pt x 29.87534pt.
+(pdftex.def)             Requested size: 65.75682pt x 29.59056pt.
 LaTeX Font Info:    Trying to load font information for OT1+lmss on input line 15.
  (c:/texlive/2026/texmf-dist/tex/latex/lm/ot1lmss.fd
 File: ot1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -850,84 +848,6 @@ LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <8> not available
 (Font)              Font shape `T1/lmss/m/sl' tried instead on input line 15.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <6> not available
 (Font)              Font shape `T1/lmss/m/sl' tried instead on input line 15.
-<imagens/autores/avelar.jpg, id=15, 4294.0425pt x 4294.0425pt>
-File: imagens/autores/avelar.jpg Graphic file (type jpg)
-<use imagens/autores/avelar.jpg>
-Package pdftex.def Info: imagens/autores/avelar.jpg  used on input line 15.
-(pdftex.def)             Requested size: 28.45274pt x 28.43642pt.
-File: imagens/autores/avelar.jpg Graphic file (type jpg)
-<use imagens/autores/avelar.jpg>
-Package pdftex.def Info: imagens/autores/avelar.jpg  used on input line 15.
-(pdftex.def)             Requested size: 25.0293pt x 25.03856pt.
-<imagens/autores/jean.jpg, id=16, 1091.07625pt x 1452.42625pt>
-File: imagens/autores/jean.jpg Graphic file (type jpg)
-<use imagens/autores/jean.jpg>
-Package pdftex.def Info: imagens/autores/jean.jpg  used on input line 15.
-(pdftex.def)             Requested size: 28.45274pt x 37.87521pt.
-File: imagens/autores/jean.jpg Graphic file (type jpg)
-<use imagens/autores/jean.jpg>
-Package pdftex.def Info: imagens/autores/jean.jpg  used on input line 15.
-(pdftex.def)             Requested size: 25.03856pt x 33.3098pt.
-<imagens/autores/karielly.jpg, id=17, 147.55125pt x 168.63pt>
-File: imagens/autores/karielly.jpg Graphic file (type jpg)
-<use imagens/autores/karielly.jpg>
-Package pdftex.def Info: imagens/autores/karielly.jpg  used on input line 15.
-(pdftex.def)             Requested size: 28.45274pt x 32.51604pt.
-File: imagens/autores/karielly.jpg Graphic file (type jpg)
-<use imagens/autores/karielly.jpg>
-Package pdftex.def Info: imagens/autores/karielly.jpg  used on input line 15.
-(pdftex.def)             Requested size: 25.03856pt x 28.61525pt.
-<imagens/autores/manoel.jpg, id=18, 134.75343pt x 199.49532pt>
-File: imagens/autores/manoel.jpg Graphic file (type jpg)
-<use imagens/autores/manoel.jpg>
-Package pdftex.def Info: imagens/autores/manoel.jpg  used on input line 15.
-(pdftex.def)             Requested size: 28.45274pt x 42.1205pt.
-File: imagens/autores/manoel.jpg Graphic file (type jpg)
-<use imagens/autores/manoel.jpg>
-Package pdftex.def Info: imagens/autores/manoel.jpg  used on input line 15.
-(pdftex.def)             Requested size: 25.03856pt x 37.06738pt.
-<imagens/autores/marx.jpg, id=19, 139.4811pt x 192.9609pt>
-File: imagens/autores/marx.jpg Graphic file (type jpg)
-<use imagens/autores/marx.jpg>
-Package pdftex.def Info: imagens/autores/marx.jpg  used on input line 15.
-(pdftex.def)             Requested size: 28.45274pt x 39.35995pt.
-File: imagens/autores/marx.jpg Graphic file (type jpg)
-<use imagens/autores/marx.jpg>
-Package pdftex.def Info: imagens/autores/marx.jpg  used on input line 15.
-(pdftex.def)             Requested size: 25.03856pt x 34.63724pt.
- [1
 
-{c:/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc} <./imagens/logos/icmc.png> <./imagens/autores/avelar.jpg> <./imagens/autores/jean.jpg> <./imagens/autores/karielly.jpg> <./imagens/autores/manoel.jpg> <./imagens/autores/marx.jpg>]
-\tf@nav=\write6
-\openout6 = `main.nav'.
-
-\tf@toc=\write7
-\openout7 = `main.toc'.
-
-\tf@snm=\write8
-\openout8 = `main.snm'.
-
- (./main.aux)
- ***********
-LaTeX2e <2026-06-01>
-L3 programming layer <2026-06-18>
- ***********
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
- ) 
-Here is how much of TeX's memory you used:
- 25945 strings out of 467168
- 505588 string characters out of 5413706
- 918979 words of memory out of 5000000
- 54684 multiletter control sequences out of 15000+600000
- 668508 words of font info for 69 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 128i,13n,123p,408b,1243s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmss8.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb>
-Output written on main.pdf (1 page, 4030566 bytes).
-PDF statistics:
- 42 PDF objects out of 1000 (max. 8388607)
- 21 compressed objects within 1 object stream
- 3 named destinations out of 1000 (max. 500000)
- 73 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+!pdfTeX error: pdflatex.exe (file ./imagens/logos/ufpi.png): libpng: internal error
+ ==> Fatal error occurred, no output PDF file produced!
