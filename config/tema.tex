@@ -352,7 +352,7 @@
         \int_compare:nNnT {\l__capa_numero_autores_int} > {5}
           {\PackageError{capa}{O~formato~fotos~aceita~no~maximo~5~autores}{Use~FormatoCapa{texto}.}}
       }
-    \begin{frame}[plain]
+    \begin{frame}[plain,noframenumbering]
       \begin{tikzpicture}[remember~picture,overlay]
         \fill[fundoCapa]
           (current~page.south~west) rectangle (current~page.north~east);

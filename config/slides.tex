@@ -1,0 +1,150 @@
+
+% Estilo dos slides de conteudo
+
+\definecolor{bordaSlide}{HTML}{8EAECB}
+\definecolor{pontoInativo}{HTML}{C4D5E4}
+\definecolor{pontoAtivo}{HTML}{104B80}
+
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamerfont{normal text}{
+  size=\fontsize{10}{13}\selectfont
+}
+
+\setbeamercolor{frametitle}{fg=azulPrincipal}
+\setbeamerfont{frametitle}{
+  size=\fontsize{14}{17}\selectfont,
+  series=\mdseries
+}
+
+\setbeamersize{
+  text margin left=0.94cm,
+  text margin right=0.94cm
+}
+
+% Titulo superior
+
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \vspace*{1.02cm}%
+  \begin{beamercolorbox}[
+    wd=\paperwidth,
+    leftskip=0.73cm,
+    rightskip=0.73cm
+  ]{frametitle}%
+    \usebeamerfont{frametitle}%
+    \insertframetitle
+  \end{beamercolorbox}%
+  \vspace*{0.08cm}%
+}
+
+% Marcadores dos topicos
+
+\setbeamertemplate{itemize item}{
+  \raisebox{0.07ex}{
+    \textcolor{azulPrincipal}{
+      \scriptsize$\blacktriangleright$
+    }
+  }
+}
+
+\setbeamertemplate{itemize subitem}{
+  \textcolor{azulPrincipal}{
+    \scriptsize$\triangleright$
+  }
+}
+
+\setlength{\leftmargini}{1.2em}
+
+% Moldura e paginacao
+
+\newcommand{\DesenharMolduraSlide}{%
+
+  \ifnum\value{framenumber}>0\relax
+
+    \begin{tikzpicture}[
+      remember picture,
+      overlay
+    ]
+
+      \coordinate (SW) at
+        (current page.south west);
+
+      \coordinate (NE) at
+        (current page.north east);
+
+      % Moldura principal
+
+      \draw[
+        draw=bordaSlide,
+        line width=.70pt,
+        rounded corners=.36cm
+      ]
+        ($(SW)+(.36cm,.32cm)$)
+        rectangle
+        ($(NE)+(-.36cm,-.32cm)$);
+
+      % Quantidade automatica de bolinhas
+
+      \pgfmathtruncatemacro{\TotalPontos}{
+        max(1,\inserttotalframenumber)
+      }
+
+      \pgfmathsetmacro{\EspacoPontos}{
+        min(.275,5.8/\TotalPontos)
+      }
+
+      % Bolinhas do progresso
+
+      \foreach \i in {1,...,\TotalPontos} {
+
+        \pgfmathsetmacro{\Deslocamento}{
+          (\i-(\TotalPontos+1)/2)*\EspacoPontos
+        }
+
+        \ifnum\i=\value{framenumber}
+
+          \fill[pontoAtivo]
+            ($(current page.south)+
+              (\Deslocamento cm,.64cm)$)
+            circle [radius=.061cm];
+
+        \else
+
+          \fill[pontoInativo]
+            ($(current page.south)+
+              (\Deslocamento cm,.64cm)$)
+            circle [radius=.061cm];
+
+        \fi
+      }
+
+      % Espaco branco para a numeracao
+
+      \fill[white]
+        ($(current page.south)+
+          (-.37cm,.22cm)$)
+        rectangle
+        ($(current page.south)+
+          (.37cm,.42cm)$);
+
+      % Numero da pagina
+
+      \node[
+        font=\fontsize{8.5}{10}\selectfont,
+        text=azulPrincipal
+      ]
+        at ($(current page.south)+
+          (0,.32cm)$)
+        {
+          \insertframenumber/
+          \inserttotalframenumber
+        };
+
+    \end{tikzpicture}%
+
+  \fi
+}
+
+\setbeamertemplate{background}{
+  \DesenharMolduraSlide
+}
