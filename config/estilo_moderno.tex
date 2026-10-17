@@ -1,0 +1,325 @@
+
+% Estilo moderno opcional
+
+\definecolor{modNavy}{HTML}{17354D}
+\definecolor{modBlue}{HTML}{27678E}
+\definecolor{modTeal}{HTML}{159A9B}
+\definecolor{modBorder}{HTML}{CAD8E1}
+\definecolor{modMuted}{HTML}{778896}
+\definecolor{modPale}{HTML}{EDF5F7}
+\definecolor{modBackground}{HTML}{FCFDFE}
+
+\renewcommand{\EspacoAposTitulo}{\vspace*{0.18cm}}
+\renewcommand{\EspacoEntreTopicos}{0.18cm}
+
+\setbeamercolor{normal text}{fg=modNavy,bg=white}
+\setbeamercolor{frametitle}{fg=modNavy}
+\setbeamercolor{structure}{fg=modBlue}
+\setbeamercolor{block title}{fg=modNavy,bg=modPale}
+\setbeamercolor{block body}{fg=modNavy,bg=modPale!35}
+\setbeamercolor{alerted text}{fg=modBlue}
+
+\setbeamerfont{normal text}{
+  size=\fontsize{10}{12.8}\selectfont
+}
+
+\setbeamersize{
+  text margin left=1.02cm,
+  text margin right=1.02cm
+}
+
+% Cabecalho
+
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \vspace*{0.54cm}%
+  \begin{beamercolorbox}[
+    wd=\paperwidth,
+    leftskip=1.02cm,
+    rightskip=1.02cm
+  ]{frametitle}%
+    {
+      \color{modMuted}
+      \fontsize{7.5}{9}\selectfont
+      \bfseries
+      \ifnum\value{section}>0\relax
+        \insertsectionhead
+      \else
+        APRESENTACAO
+      \fi
+      \par
+    }%
+    \vspace{0.11cm}%
+    {
+      \color{modNavy}
+      \fontsize{16}{19.2}\selectfont
+      \bfseries
+      \insertframetitle\par
+    }%
+  \end{beamercolorbox}%
+  \vspace*{0.10cm}%
+}
+
+% Marcadores
+
+\setbeamertemplate{itemize item}{%
+  \raisebox{0.25ex}{
+    \textcolor{modTeal}{
+      \rule{0.080cm}{0.080cm}
+    }
+  }%
+}
+
+\setbeamertemplate{itemize subitem}{%
+  \raisebox{0.17ex}{
+    \textcolor{modBlue}{
+      \rule{0.060cm}{0.060cm}
+    }
+  }%
+}
+
+\setlength{\leftmargini}{1.35em}
+
+% Moldura e paginacao por secao
+
+\renewcommand{\DesenharMolduraSlide}{%
+
+  \ifnum\value{framenumber}>0\relax
+
+    \begin{tikzpicture}[
+      remember picture,
+      overlay
+    ]
+
+      \draw[
+        modBorder,
+        line width=.52pt,
+        rounded corners=.09cm
+      ]
+        ($(current page.south west)+(.36cm,.32cm)$)
+        rectangle
+        ($(current page.north east)+(-.36cm,-.32cm)$);
+
+      % Marcador vertical
+
+      \fill[modTeal]
+        ($(current page.north west)+(.72cm,-1.08cm)$)
+        rectangle
+        ($(current page.north west)+(.77cm,-1.45cm)$);
+
+      % Separador do cabecalho
+
+      \draw[modBorder!80,line width=.45pt]
+        ($(current page.north west)+(1.02cm,-1.86cm)$)
+        --
+        ($(current page.north east)+(-1.02cm,-1.86cm)$);
+
+      \draw[modTeal,line width=1.35pt]
+        ($(current page.north west)+(1.02cm,-1.86cm)$)
+        --
+        ($(current page.north west)+(2.05cm,-1.86cm)$);
+
+      % Progresso da secao atual
+
+      \def\TotalPontos{1}
+      \def\PontoAtual{1}
+
+      \ifnum\value{secaoComSlides}>0\relax
+
+        \ifcsname totalDaSecao@\number\value{secaoComSlides}\endcsname
+          \edef\TotalPontos{%
+            \csname totalDaSecao@\number\value{secaoComSlides}\endcsname
+          }
+        \fi
+
+        \edef\PontoAtual{%
+          \number\numexpr
+            \value{framenumber}
+            -\value{primeiroFrameDaSecao}+1
+          \relax
+        }
+
+      \fi
+
+      \pgfmathtruncatemacro{\TotalPontos}{
+        max(1,\TotalPontos)
+      }
+
+      \pgfmathtruncatemacro{\PontoAtual}{
+        max(1,\PontoAtual)
+      }
+
+      \pgfmathsetmacro{\EspacoPontos}{
+        min(.255,5.3/\TotalPontos)
+      }
+
+      \foreach \i in {1,...,\TotalPontos} {
+
+        \pgfmathsetmacro{\Deslocamento}{
+          (\i-(\TotalPontos+1)/2)*\EspacoPontos
+        }
+
+        \ifnum\i=\PontoAtual\relax
+
+          \fill[modTeal]
+            ($(current page.south)+
+              (\Deslocamento cm,.64cm)$)
+            circle[radius=.055cm];
+
+        \else
+
+          \fill[modBorder]
+            ($(current page.south)+
+              (\Deslocamento cm,.64cm)$)
+            circle[radius=.055cm];
+
+        \fi
+      }
+
+      % Numeracao global
+
+      \fill[white]
+        ($(current page.south)+(-.37cm,.23cm)$)
+        rectangle
+        ($(current page.south)+(.37cm,.42cm)$);
+
+      \node[
+        font=\fontsize{8}{9}\selectfont,
+        text=modMuted
+      ]
+        at ($(current page.south)+(0,.32cm)$)
+        {
+          \insertframenumber/
+          \inserttotalframenumber
+        };
+
+    \end{tikzpicture}%
+
+  \fi
+}
+
+% Capa moderna
+% Reutiliza os autores e as instituicoes cadastradas
+
+\ExplSyntaxOn
+
+\RenewDocumentCommand{\Capa}{}
+  {
+    \int_set:Nn \l__capa_numero_autores_int
+      {\seq_count:N \g__capa_autores_seq}
+
+    \int_compare:nNnT
+      {\l__capa_numero_autores_int} = {0}
+      {
+        \PackageError{capa}
+          {Nenhum~autor~cadastrado}
+          {Cadastre~um~autor~em~dados.tex.}
+      }
+
+    \tl_if_eq:NnT \g__capa_formato_tl {fotos}
+      {
+        \int_compare:nNnT
+          {\l__capa_numero_autores_int} > {5}
+          {
+            \PackageError{capa}
+              {Maximo~de~5~autores~com~fotos}
+              {Use~o~formato~texto.}
+          }
+      }
+
+    \tl_if_eq:NnT \g__capa_formato_tl {texto}
+      {
+        \int_compare:nNnT
+          {\l__capa_numero_autores_int} > {9}
+          {
+            \PackageError{capa}
+              {Maximo~de~9~autores~no~formato~texto}
+              {Adapte~o~layout.}
+          }
+      }
+
+    \begin{frame}[plain,noframenumbering]
+
+      \begin{tikzpicture}[
+        remember~picture,
+        overlay
+      ]
+
+        \fill[modBackground]
+          (current~page.south~west)
+          rectangle
+          (current~page.north~east);
+
+        % Faixa inferior
+
+        \fill[modNavy]
+          (current~page.south~west)
+          rectangle
+          ([yshift=.095cm]current~page.south~east);
+
+        \fill[modTeal]
+          (current~page.south~west)
+          rectangle
+          ([xshift=2.5cm,yshift=.095cm]current~page.south~west);
+
+        % Logos
+
+        \node[anchor=north] at
+          ([yshift=-\g__capa_logo_top_dim]current~page.north)
+          {\__capa_logos:};
+
+        % Separador superior
+
+        \draw[modBorder,line~width=.45pt]
+          ([xshift=-5.65cm,yshift=-\dim_eval:n{\g__capa_title_top_dim-0.64cm}]current~page.north)
+          --
+          ([xshift=5.65cm,yshift=-\dim_eval:n{\g__capa_title_top_dim-0.64cm}]current~page.north);
+
+        % Titulo e subtitulo opcional
+
+        \node[anchor=north,text=modNavy] at
+          ([yshift=-\g__capa_title_top_dim]current~page.north)
+          {
+            \parbox{.86\paperwidth}
+              {
+                \centering
+                \fontsize{13.4}{17.3}\selectfont
+                \bfseries
+                \tl_use:N \g__capa_titulo_tl\par
+
+                \tl_if_blank:VTF
+                  \g__capa_subtitulo_tl
+                  {}
+                  {
+                    \vspace{.11cm}
+                    {
+                      \color{modBlue}
+                      \fontsize{9}{11}\selectfont
+                      \normalfont
+                      \tl_use:N \g__capa_subtitulo_tl\par
+                    }
+                  }
+              }
+          };
+
+        % Separador acima dos autores
+
+        \draw[modBorder,line~width=.45pt]
+          ([xshift=-5.65cm,yshift=-\dim_eval:n{\g__capa_authors_top_dim-0.53cm}]current~page.north)
+          --
+          ([xshift=5.65cm,yshift=-\dim_eval:n{\g__capa_authors_top_dim-0.53cm}]current~page.north);
+
+        \fill[modTeal]
+          ([yshift=-\dim_eval:n{\g__capa_authors_top_dim-0.53cm}]current~page.north)
+          circle (.045cm);
+
+      \end{tikzpicture}
+
+      \tl_if_eq:NnTF \g__capa_formato_tl {texto}
+        {\__capa_autores_texto:}
+        {\__capa_autores_fotos:}
+
+    \end{frame}
+  }
+
+\ExplSyntaxOff

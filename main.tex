@@ -13,16 +13,21 @@
 \input{config/dados.tex}
 \input{config/slides.tex}
 
+\providecommand{\EspacoAposTitulo}{\EspacoAposTitulo}
+\providecommand{\EspacoEntreTopicos}{0.29cm}
+
+\input{config/estilo_moderno.tex}
+
 \begin{document}
 
 \Capa
 
 \begin{frame}[t]{Introdução}
 
-  \vspace*{0.93cm}
+  \EspacoAposTitulo
 
   \begin{itemize}
-    \setlength{\itemsep}{0.29cm}
+    \setlength{\itemsep}{\EspacoEntreTopicos}
 
     \item \textbf{Contexto:}
     apresente brevemente o tema da pesquisa.
@@ -42,10 +47,10 @@
 
 \begin{frame}[t]{Metodologia}
 
-  \vspace*{0.93cm}
+  \EspacoAposTitulo
 
   \begin{itemize}
-    \setlength{\itemsep}{0.29cm}
+    \setlength{\itemsep}{\EspacoEntreTopicos}
 
     \item \textbf{Dados:}
     descreva a origem e preparação do material.
