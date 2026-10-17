@@ -16,6 +16,15 @@
 \seq_new:N \g__capa_autores_seq
 \prop_new:N \g__capa_indices_prop
 \dim_new:N \l__capa_logo_width_dim
+\dim_new:N \l__capa_img_logo_width_dim
+\dim_new:N \l__capa_img_logo_height_dim
+\dim_new:N \g__capa_logo_width_max_dim
+\dim_new:N \g__capa_logo_height_max_dim
+\dim_new:N \g__capa_logo_top_dim
+\dim_new:N \g__capa_title_top_dim
+\dim_new:N \g__capa_authors_top_dim
+\prop_new:N \g__capa_logo_custom_width_prop
+\prop_new:N \g__capa_logo_custom_height_prop
 \dim_new:N \l__capa_autor_width_dim
 \dim_new:N \l__capa_avatar_dim
 \box_new:N \l__capa_imagem_box
@@ -24,6 +33,32 @@
 \int_new:N \l__capa_indice_ref_int
 
 \tl_gset:Nn \g__capa_formato_tl {fotos}
+
+% Configuracoes padrao da capa; altere pelo arquivo dados.tex.
+\dim_gset:Nn \g__capa_logo_width_max_dim {3.35cm}
+\dim_gset:Nn \g__capa_logo_height_max_dim {1.20cm}
+\dim_gset:Nn \g__capa_logo_top_dim {0.38cm}
+\dim_gset:Nn \g__capa_title_top_dim {2.62cm}
+\dim_gset:Nn \g__capa_authors_top_dim {4.70cm}
+
+\NewDocumentCommand{\TamanhoPadraoLogos}{mm}
+  {
+    \dim_gset:Nn \g__capa_logo_width_max_dim {#1}
+    \dim_gset:Nn \g__capa_logo_height_max_dim {#2}
+  }
+
+\NewDocumentCommand{\TamanhoLogo}{mmm}
+  {
+    \prop_gput:Nnn \g__capa_logo_custom_width_prop {#1} {#2}
+    \prop_gput:Nnn \g__capa_logo_custom_height_prop {#1} {#3}
+  }
+
+\NewDocumentCommand{\PosicaoLogos}{m}
+  {\dim_gset:Nn \g__capa_logo_top_dim {#1}}
+\NewDocumentCommand{\PosicaoTitulo}{m}
+  {\dim_gset:Nn \g__capa_title_top_dim {#1}}
+\NewDocumentCommand{\PosicaoAutores}{m}
+  {\dim_gset:Nn \g__capa_authors_top_dim {#1}}
 
 \NewDocumentCommand{\FormatoCapa}{m}
   {
@@ -83,7 +118,21 @@
 
 \cs_new_protected:Npn \__capa_logo_instituicao:nnn #1#2#3
   {
-    \begin{minipage}[c][1.12cm][c]{\l__capa_logo_width_dim}
+    % Tamanhos individuais substituem os limites globais.
+    \dim_set_eq:NN \l__capa_img_logo_width_dim \g__capa_logo_width_max_dim
+    \dim_set_eq:NN \l__capa_img_logo_height_dim \g__capa_logo_height_max_dim
+
+    \prop_get:NnNT \g__capa_logo_custom_width_prop {#1} \l_tmpa_tl
+      {\dim_set:Nn \l__capa_img_logo_width_dim {\l_tmpa_tl}}
+    \prop_get:NnNT \g__capa_logo_custom_height_prop {#1} \l_tmpa_tl
+      {\dim_set:Nn \l__capa_img_logo_height_dim {\l_tmpa_tl}}
+
+    % Cada imagem respeita o espaco horizontal disponivel.
+    \dim_set:Nn \l__capa_img_logo_width_dim
+      {\dim_min:nn {\l__capa_img_logo_width_dim}
+        {\dim_eval:n {\l__capa_logo_width_dim-0.12cm}}}
+
+    \begin{minipage}[c][1.55cm][c]{\l__capa_logo_width_dim}
       \centering
       \tl_if_blank:nTF {#3}
         {\__capa_marca_padrao:n {#1}}
@@ -91,8 +140,8 @@
           \IfFileExists{#3}
             {
               \includegraphics[
-                width=\dim_eval:n {\l__capa_logo_width_dim-0.20cm},
-                height=1.04cm,
+                width=\l__capa_img_logo_width_dim,
+                height=\l__capa_img_logo_height_dim,
                 keepaspectratio
               ]{#3}
             }
@@ -108,7 +157,7 @@
         \dim_set:Nn \l__capa_logo_width_dim
           {
             \dim_min:nn
-              {3.05cm}
+              {4.00cm}
               {.83\paperwidth/\seq_count:N \g__capa_instituicoes_seq}
           }
         \hbox to .91\paperwidth
@@ -224,32 +273,32 @@
       {
         \begin{tikzpicture}[remember~picture,overlay]
           \node[anchor=north] at
-            ([yshift=-3.72cm]current~page.north)
+            ([yshift=-\dim_eval:n {\g__capa_authors_top_dim-0.65cm}]current~page.north)
             {\__capa_linha_texto:nn {1}{3}};
           \node[anchor=north] at
-            ([yshift=-4.42cm]current~page.north)
+            ([yshift=-\dim_eval:n {\g__capa_authors_top_dim+0.05cm}]current~page.north)
             {\__capa_linha_texto:nn {4}{6}};
           \node[anchor=north] at
-            ([yshift=-5.12cm]current~page.north)
+            ([yshift=-\dim_eval:n {\g__capa_authors_top_dim+0.75cm}]current~page.north)
             {\__capa_linha_texto:nn {7}{9}};
           \node[anchor=north] at
-            ([yshift=-6.08cm]current~page.north)
+            ([yshift=-\dim_eval:n {\g__capa_authors_top_dim+1.65cm}]current~page.north)
             {\__capa_bloco_notas:};
         \end{tikzpicture}
       }
       {
         \begin{tikzpicture}[remember~picture,overlay]
           \node[anchor=north] at
-            ([yshift=-4.04cm]current~page.north)
+            ([yshift=-\dim_eval:n {\g__capa_authors_top_dim-0.14cm}]current~page.north)
             {\__capa_linha_texto:nn {1}{3}};
           \int_compare:nNnT {\l__capa_numero_autores_int} > {3}
             {
               \node[anchor=north] at
-                ([yshift=-4.86cm]current~page.north)
+                ([yshift=-\dim_eval:n {\g__capa_authors_top_dim+0.68cm}]current~page.north)
                 {\__capa_linha_texto:nn {4}{6}};
             }
           \node[anchor=north] at
-            ([yshift=-5.78cm]current~page.north)
+            ([yshift=-\dim_eval:n {\g__capa_authors_top_dim+1.55cm}]current~page.north)
             {\__capa_bloco_notas:};
         \end{tikzpicture}
       }
@@ -279,7 +328,7 @@
       {\dim_min:nn {2.74cm}{.84\paperwidth/\l__capa_numero_autores_int}}
     \begin{tikzpicture}[remember~picture,overlay]
       \node[anchor=north] at
-        ([yshift=-4.08cm]current~page.north)
+        ([yshift=-\g__capa_authors_top_dim]current~page.north)
         {
           \hbox to .96\paperwidth
             {\hfill \seq_map_inline:Nn \g__capa_autores_seq {##1\hfill}}
@@ -317,10 +366,10 @@
           (current~page.south~west) rectangle
           ([yshift=.14cm]current~page.south~east);
         \node[anchor=north] at
-          ([yshift=-.44cm]current~page.north)
+          ([yshift=-\g__capa_logo_top_dim]current~page.north)
           {\__capa_logos:};
         \node[anchor=north,text=azulEscuro] at
-          ([yshift=-2.25cm]current~page.north)
+          ([yshift=-\g__capa_title_top_dim]current~page.north)
           {
             \parbox{.86\paperwidth}
               {
