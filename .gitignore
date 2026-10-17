@@ -1,0 +1,57 @@
+
+# LaTeX - arquivos auxiliares
+*.aux
+*.log
+*.out
+*.toc
+*.nav
+*.snm
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex
+*.vrb
+*.xdv
+*.dvi
+*.ps
+
+# Bibliografia e indices gerados
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.lof
+*.lot
+*.idx
+*.ilg
+*.ind
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+
+# PDFs compilados na raiz do projeto
+/*.pdf
+
+# Pastas temporarias de compilacao
+/build/
+/out/
+/output/
+/aux/
+/tmp/
+
+# Arquivos temporarios de editores
+*.bak
+*.tmp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Configuracoes locais
+.vscode/
+.idea/
