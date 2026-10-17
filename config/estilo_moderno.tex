@@ -1,6 +1,3 @@
-
-% Estilo moderno opcional
-
 \definecolor{modNavy}{HTML}{17354D}
 \definecolor{modBlue}{HTML}{27678E}
 \definecolor{modTeal}{HTML}{159A9B}
@@ -9,8 +6,11 @@
 \definecolor{modPale}{HTML}{EDF5F7}
 \definecolor{modBackground}{HTML}{FCFDFE}
 
-\renewcommand{\EspacoAposTitulo}{\vspace*{0.18cm}}
-\renewcommand{\EspacoEntreTopicos}{0.18cm}
+\renewcommand{\EspacoAposTitulo}{\vspace*{0.10cm}}
+\renewcommand{\EspacoEntreTopicos}{0.16cm}
+
+\newif\ifMostrarMolduraSemNumero
+\MostrarMolduraSemNumerofalse
 
 \setbeamercolor{normal text}{fg=modNavy,bg=white}
 \setbeamercolor{frametitle}{fg=modNavy}
@@ -20,71 +20,94 @@
 \setbeamercolor{alerted text}{fg=modBlue}
 
 \setbeamerfont{normal text}{
-  size=\fontsize{10}{12.8}\selectfont
+  size=\fontsize{10}{12.6}\selectfont
 }
 
 \setbeamersize{
-  text margin left=1.02cm,
+  text margin left=1.16cm,
   text margin right=1.02cm
 }
 
-% Cabecalho
-
+% Cabecalho mais alinhado e minimalista
 \setbeamertemplate{frametitle}{%
   \nointerlineskip
-  \vspace*{0.54cm}%
+  \vspace*{0.44cm}%
   \begin{beamercolorbox}[
     wd=\paperwidth,
-    leftskip=1.02cm,
+    leftskip=1.18cm,
     rightskip=1.02cm
   ]{frametitle}%
-    {
+    {%
       \color{modMuted}
       \fontsize{7.5}{9}\selectfont
       \bfseries
       \ifnum\value{section}>0\relax
         \insertsectionhead
       \else
-        APRESENTACAO
+        APRESENTAÇÃO
       \fi
       \par
     }%
-    \vspace{0.11cm}%
-    {
+    \vspace{0.08cm}%
+    {%
       \color{modNavy}
-      \fontsize{16}{19.2}\selectfont
+      \fontsize{16}{19}\selectfont
       \bfseries
       \insertframetitle\par
     }%
   \end{beamercolorbox}%
-  \vspace*{0.10cm}%
+  \vspace*{0.08cm}%
 }
 
 % Marcadores
-
 \setbeamertemplate{itemize item}{%
-  \raisebox{0.25ex}{
-    \textcolor{modTeal}{
-      \rule{0.080cm}{0.080cm}
-    }
+  \raisebox{0.25ex}{%
+    \textcolor{modTeal}{%
+      \rule{0.075cm}{0.075cm}%
+    }%
   }%
 }
 
 \setbeamertemplate{itemize subitem}{%
-  \raisebox{0.17ex}{
-    \textcolor{modBlue}{
-      \rule{0.060cm}{0.060cm}
-    }
+  \raisebox{0.17ex}{%
+    \textcolor{modBlue}{%
+      \rule{0.055cm}{0.055cm}%
+    }%
   }%
 }
 
 \setlength{\leftmargini}{1.35em}
 
-% Moldura e paginacao por secao
+% Sumario mais minimalista
+\setbeamerfont{section in toc}{size=\fontsize{11}{13}\selectfont,series=\bfseries}
+\setbeamercolor{section in toc}{fg=modNavy}
+\setbeamertemplate{section in toc}{%
+  \leavevmode
+  \vspace{0.14cm}%
+  \makebox[1.15em][l]{\textcolor{modTeal}{\rule{0.08cm}{0.08cm}}}%
+  \inserttocsection\par
+}
 
+% Moldura e paginacao por secao
 \renewcommand{\DesenharMolduraSlide}{%
 
   \ifnum\value{framenumber}>0\relax
+    \def\DesenharRodape{1}%
+  \else
+    \def\DesenharRodape{0}%
+  \fi
+
+  \ifnum\value{framenumber}>0\relax
+    \def\DesenharQuadro{1}%
+  \else
+    \ifMostrarMolduraSemNumero
+      \def\DesenharQuadro{1}%
+    \else
+      \def\DesenharQuadro{0}%
+    \fi
+  \fi
+
+  \ifnum\DesenharQuadro=1\relax
 
     \begin{tikzpicture}[
       remember picture,
@@ -93,105 +116,82 @@
 
       \draw[
         modBorder,
-        line width=.52pt,
-        rounded corners=.09cm
+        line width=.48pt,
+        rounded corners=.10cm
       ]
         ($(current page.south west)+(.36cm,.32cm)$)
         rectangle
         ($(current page.north east)+(-.36cm,-.32cm)$);
 
-      % Marcador vertical
-
+      % Marcador vertical alinhado ao bloco de titulo
       \fill[modTeal]
-        ($(current page.north west)+(.72cm,-1.08cm)$)
+        ($(current page.north west)+(1.00cm,-1.00cm)$)
         rectangle
-        ($(current page.north west)+(.77cm,-1.45cm)$);
+        ($(current page.north west)+(1.03cm,-1.55cm)$);
 
       % Separador do cabecalho
-
-      \draw[modBorder!80,line width=.45pt]
-        ($(current page.north west)+(1.02cm,-1.86cm)$)
+      \draw[modBorder!85,line width=.42pt]
+        ($(current page.north west)+(1.18cm,-1.80cm)$)
         --
-        ($(current page.north east)+(-1.02cm,-1.86cm)$);
+        ($(current page.north east)+(-1.02cm,-1.80cm)$);
 
-      \draw[modTeal,line width=1.35pt]
-        ($(current page.north west)+(1.02cm,-1.86cm)$)
+      \draw[modTeal,line width=1.10pt]
+        ($(current page.north west)+(1.18cm,-1.80cm)$)
         --
-        ($(current page.north west)+(2.05cm,-1.86cm)$);
+        ($(current page.north west)+(2.15cm,-1.80cm)$);
 
-      % Progresso da secao atual
+      \ifnum\DesenharRodape=1\relax
+        % Progresso da secao atual
+        \def\TotalPontos{1}
+        \def\PontoAtual{1}
 
-      \def\TotalPontos{1}
-      \def\PontoAtual{1}
+        \ifnum\value{secaoComSlides}>0\relax
+          \ifcsname totalDaSecao@\number\value{secaoComSlides}\endcsname
+            \edef\TotalPontos{%
+              \csname totalDaSecao@\number\value{secaoComSlides}\endcsname
+            }
+          \fi
 
-      \ifnum\value{secaoComSlides}>0\relax
-
-        \ifcsname totalDaSecao@\number\value{secaoComSlides}\endcsname
-          \edef\TotalPontos{%
-            \csname totalDaSecao@\number\value{secaoComSlides}\endcsname
+          \edef\PontoAtual{%
+            \number\numexpr
+              \value{framenumber}
+              -\value{primeiroFrameDaSecao}+1
+            \relax
           }
         \fi
 
-        \edef\PontoAtual{%
-          \number\numexpr
-            \value{framenumber}
-            -\value{primeiroFrameDaSecao}+1
-          \relax
+        \pgfmathtruncatemacro{\TotalPontos}{max(1,\TotalPontos)}
+        \pgfmathtruncatemacro{\PontoAtual}{max(1,\PontoAtual)}
+        \pgfmathsetmacro{\EspacoPontos}{min(.255,5.3/\TotalPontos)}
+
+        \foreach \i in {1,...,\TotalPontos} {
+          \pgfmathsetmacro{\Deslocamento}{(\i-(\TotalPontos+1)/2)*\EspacoPontos}
+          \ifnum\i=\PontoAtual\relax
+            \fill[modTeal]
+              ($(current page.south)+(\Deslocamento cm,.64cm)$)
+              circle[radius=.055cm];
+          \else
+            \fill[modBorder]
+              ($(current page.south)+(\Deslocamento cm,.64cm)$)
+              circle[radius=.055cm];
+          \fi
         }
 
+        % Numeracao global
+        \fill[white]
+          ($(current page.south)+(-.37cm,.23cm)$)
+          rectangle
+          ($(current page.south)+(.37cm,.42cm)$);
+
+        \node[
+          font=\fontsize{8}{9}\selectfont,
+          text=modMuted
+        ]
+          at ($(current page.south)+(0,.32cm)$)
+          {
+            \insertframenumber/\inserttotalframenumber
+          };
       \fi
-
-      \pgfmathtruncatemacro{\TotalPontos}{
-        max(1,\TotalPontos)
-      }
-
-      \pgfmathtruncatemacro{\PontoAtual}{
-        max(1,\PontoAtual)
-      }
-
-      \pgfmathsetmacro{\EspacoPontos}{
-        min(.255,5.3/\TotalPontos)
-      }
-
-      \foreach \i in {1,...,\TotalPontos} {
-
-        \pgfmathsetmacro{\Deslocamento}{
-          (\i-(\TotalPontos+1)/2)*\EspacoPontos
-        }
-
-        \ifnum\i=\PontoAtual\relax
-
-          \fill[modTeal]
-            ($(current page.south)+
-              (\Deslocamento cm,.64cm)$)
-            circle[radius=.055cm];
-
-        \else
-
-          \fill[modBorder]
-            ($(current page.south)+
-              (\Deslocamento cm,.64cm)$)
-            circle[radius=.055cm];
-
-        \fi
-      }
-
-      % Numeracao global
-
-      \fill[white]
-        ($(current page.south)+(-.37cm,.23cm)$)
-        rectangle
-        ($(current page.south)+(.37cm,.42cm)$);
-
-      \node[
-        font=\fontsize{8}{9}\selectfont,
-        text=modMuted
-      ]
-        at ($(current page.south)+(0,.32cm)$)
-        {
-          \insertframenumber/
-          \inserttotalframenumber
-        };
 
     \end{tikzpicture}%
 
@@ -251,7 +251,6 @@
           (current~page.north~east);
 
         % Faixa inferior
-
         \fill[modNavy]
           (current~page.south~west)
           rectangle
@@ -263,55 +262,38 @@
           ([xshift=2.5cm,yshift=.095cm]current~page.south~west);
 
         % Logos
-
         \node[anchor=north] at
           ([yshift=-\g__capa_logo_top_dim]current~page.north)
           {\__capa_logos:};
 
-        % Separador superior
-
+        % Separador superior: mais proximo do titulo e mais afastado das logos
         \draw[modBorder,line~width=.45pt]
-          ([xshift=-5.65cm,yshift=-\dim_eval:n{\g__capa_title_top_dim-0.64cm}]current~page.north)
+          ([xshift=-5.65cm,yshift=-\dim_eval:n{\g__capa_title_top_dim-0.32cm}]current~page.north)
           --
-          ([xshift=5.65cm,yshift=-\dim_eval:n{\g__capa_title_top_dim-0.64cm}]current~page.north);
+          ([xshift=5.65cm,yshift=-\dim_eval:n{\g__capa_title_top_dim-0.32cm}]current~page.north);
 
         % Titulo e subtitulo opcional
-
         \node[anchor=north,text=modNavy] at
           ([yshift=-\g__capa_title_top_dim]current~page.north)
           {
-            \parbox{.86\paperwidth}
-              {
-                \centering
-                \fontsize{13.4}{17.3}\selectfont
-                \bfseries
-                \tl_use:N \g__capa_titulo_tl\par
+            \parbox{.86\paperwidth}{
+              \centering
+              \fontsize{13.4}{17.3}\selectfont
+              \bfseries
+              \tl_use:N \g__capa_titulo_tl\par
 
-                \tl_if_blank:VTF
-                  \g__capa_subtitulo_tl
-                  {}
-                  {
-                    \vspace{.11cm}
-                    {
-                      \color{modBlue}
-                      \fontsize{9}{11}\selectfont
-                      \normalfont
-                      \tl_use:N \g__capa_subtitulo_tl\par
-                    }
-                  }
+              \tl_if_blank:VTF \g__capa_subtitulo_tl {} {
+                \vspace{.11cm}
+                {\color{modBlue}\fontsize{9}{11}\selectfont\normalfont\tl_use:N \g__capa_subtitulo_tl\par}
               }
+            }
           };
 
         % Separador acima dos autores
-
         \draw[modBorder,line~width=.45pt]
           ([xshift=-5.65cm,yshift=-\dim_eval:n{\g__capa_authors_top_dim-0.53cm}]current~page.north)
           --
           ([xshift=5.65cm,yshift=-\dim_eval:n{\g__capa_authors_top_dim-0.53cm}]current~page.north);
-
-        \fill[modTeal]
-          ([yshift=-\dim_eval:n{\g__capa_authors_top_dim-0.53cm}]current~page.north)
-          circle (.045cm);
 
       \end{tikzpicture}
 
