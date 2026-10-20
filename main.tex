@@ -2,9 +2,15 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[brazil]{babel}
-\usepackage{lmodern}
+% Carrega o portugues (Overleaf); cai para ingles se os arquivos do
+% idioma nao estiverem instalados, preservando acentos e compilacao.
+\IfFileExists{brazil.ldf}
+  {\usepackage[brazil]{babel}}
+  {\usepackage[english]{babel}}
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
 \usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
 \usepackage{tikz}
 \usetikzlibrary{calc}
 
@@ -17,21 +23,25 @@
 
 \input{config/estilo_moderno.tex}
 
+% Realce de termos
+\newcommand{\dest}[1]{\textcolor{modTeal}{\textbf{#1}}}
+
 \begin{document}
 
 \Capa
 
-% \MostrarMolduraSemNumerotrue
-% \begin{frame}[t,noframenumbering]{Sumário}
+\MostrarMolduraSemNumerotrue
+\begin{frame}[t,noframenumbering]{Sumário}
 
-%   \EspacoAposTitulo
+  \EspacoAposTitulo
 
-%   {\small
-%   \tableofcontents[hideallsubsections]}
+  {\small
+  \tableofcontents[hideallsubsections]}
 
-% \end{frame}
-% \MostrarMolduraSemNumerofalse
+\end{frame}
+\MostrarMolduraSemNumerofalse
 
+% ======================================================================
 \section{Introdução}
 
 \begin{frame}[t]{Introdução}
@@ -42,40 +52,348 @@
     \setlength{\itemsep}{\EspacoEntreTopicos}
 
     \item \textbf{Contexto:}
-    apresente brevemente o tema da pesquisa.
+    redes complexas representam sistemas de entidades interconectadas
+    (relações sociais, colaborações científicas, comunicações e
+    infraestruturas físicas).
+
+    \item \textbf{Predição de links:}
+    estimar conexões ausentes ou futuras a partir da topologia observada
+    — tarefa central em redes sociais, sistemas de recomendação e
+    recuperação de informação.
 
     \item \textbf{Problema:}
-    descreva a dificuldade que motivou o trabalho.
+    há muitos índices topológicos (locais e quase-locais), mas seus
+    resultados costumam ser reportados sob condições heterogêneas,
+    dificultando a comparação.
 
     \item \textbf{Objetivo:}
-    indique o que a pesquisa pretende alcançar.
-
-    \item \textbf{Contribuições:}
-    destaque os principais diferenciais.
+    avaliar empiricamente \dest{19 métodos topológicos} de predição de
+    links em \dest{8 redes reais} de 4 domínios, sob um
+    \dest{protocolo único e uniforme}.
 
   \end{itemize}
 
 \end{frame}
 
-\section{Metodologia}
-
-\begin{frame}[t]{Metodologia}
+\begin{frame}[t]{Questões de pesquisa e contribuições}
 
   \EspacoAposTitulo
 
   \begin{itemize}
     \setlength{\itemsep}{\EspacoEntreTopicos}
 
-    \item \textbf{Dados:}
-    descreva a origem e preparação do material.
-
-    \item \textbf{Método:}
-    apresente as etapas do procedimento.
-
-    \item \textbf{Avaliação:}
-    indique as métricas e os critérios utilizados.
+    \item \textbf{RQ1:} o desempenho dos métodos varia entre redes de
+    domínios diferentes?
+    \item \textbf{RQ2:} métodos quase-locais superam os métodos locais
+    simples?
+    \item \textbf{RQ3:} existe um método dominante entre os avaliados?
+    \item \textbf{RQ4:} propriedades estruturais ajudam a explicar a
+    dificuldade da tarefa?
 
   \end{itemize}
+
+  \vspace{0.30cm}
+  \begin{block}{Contribuição principal}
+    Não propor um novo índice, mas uma \dest{análise comparativa}
+    do comportamento de métodos topológicos sob um protocolo comum,
+    incluindo ranqueamento, significância estatística e a relação
+    (exploratória) entre estrutura e dificuldade.
+  \end{block}
+
+\end{frame}
+
+% ======================================================================
+\section{Redes e caracterização estrutural}
+
+\begin{frame}[t]{Redes utilizadas — 8 redes, 4 domínios}
+
+  \EspacoAposTitulo
+
+  Duas redes por domínio; grafos simples não direcionados (maior
+  componente conexa, sem laços).
+
+  \vspace{0.18cm}
+  {\footnotesize
+  \setlength{\tabcolsep}{5pt}
+  \renewcommand{\arraystretch}{1.05}
+  \begin{center}
+  \begin{tabular}{llrrrrr}
+    \toprule
+    \textbf{Rede} & \textbf{Domínio} & $|V|$ & $|E|$ &
+    \textbf{Grau m.} & \textbf{Clust.} & \textbf{Assort.} \\
+    \midrule
+    ego-Facebook       & Social        & 4.039 & 88.234  & 43,69 & 0,606 & \phantom{-}0,064 \\
+    socfb-Middlebury45 & Social        & 3.069 & 124.607 & 81,20 & 0,282 & \phantom{-}0,078 \\
+    ca-GrQc            & Colab. cient. & 4.158 & 13.422  & \phantom{0}6,46 & 0,557 & \phantom{-}0,639 \\
+    ca-HepTh           & Colab. cient. & 8.638 & 24.806  & \phantom{0}5,74 & 0,482 & \phantom{-}0,239 \\
+    email-Eu-core      & Comunicação   & \phantom{0.}986 & 16.064 & 32,58 & 0,407 & -0,026 \\
+    email-univ         & Comunicação   & 1.133 & 5.451   & \phantom{0}9,62 & 0,220 & \phantom{-}0,078 \\
+    power-1138-bus     & Infraestrutura& 1.138 & 1.458   & \phantom{0}2,56 & 0,087 & -0,080 \\
+    power-grid         & Infraestrutura& 4.941 & 6.594   & \phantom{0}2,67 & 0,080 & \phantom{-}0,003 \\
+    \bottomrule
+  \end{tabular}
+  \end{center}}
+
+  \vspace{0.12cm}
+  {\scriptsize
+  Redes sociais/colaboração têm \dest{maior fechamento local}; as de
+  infraestrutura têm baixo grau e agrupamento.}
+
+\end{frame}
+
+% ======================================================================
+\section{Metodologia experimental}
+
+\begin{frame}[t]{Protocolo de avaliação}
+
+  \EspacoAposTitulo
+
+  \begin{itemize}
+    \setlength{\itemsep}{\EspacoEntreTopicos}
+
+    \item \textbf{Tarefa:} remover arestas observadas, pontuar pares
+    candidatos no grafo de treino e verificar se as arestas removidas
+    são ranqueadas acima de não-arestas amostradas.
+
+    \item \textbf{Validação cruzada:} \dest{5 folds}; uma árvore geradora
+    é mantida fixa e apenas as arestas restantes são distribuídas,
+    preservando a conectividade do grafo de treino.
+
+    \item \textbf{Amostragem negativa balanceada:} um par negativo para
+    cada par positivo (razão 1:1) — comparação controlada, não a
+    imbalanceada natural.
+
+    \item \textbf{Métrica principal:} \dest{Average Precision (AP)},
+    pois a predição é tratada como tarefa de ranqueamento.
+    Complementares: ROC-AUC, Precision, NDCG (em $K=|E_i^+|$).
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]{Métodos avaliados e configurações}
+
+  \EspacoAposTitulo
+
+  \begin{columns}[t]
+    \begin{column}{0.56\textwidth}
+      \textbf{19 métodos locais e quase-locais}
+      \begin{itemize}
+        \setlength{\itemsep}{0.12cm}
+        \item \textbf{Similaridade local:} CN, AA, RA, PA, JA, SA, SO,
+        HPI, HDI, LLHN
+        \item \textbf{Local aprimorado:} IA2, CAR-RA, FSW, RA-CNI
+        \item \textbf{Bayesiano local:} LNB-RA
+        \item \textbf{Quase-local (caminhos):} LPI-beta-0.001
+        \item \textbf{Quase-local (passeios):} LRW-l3, SRW-l3, PFP-l3
+      \end{itemize}
+      \vspace{0.15cm}
+      {\footnotesize Hiperparâmetros fixos pela literatura
+      ($\beta=0{,}001$; $l=3$ passos), mantendo a comparação uniforme.}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      {\footnotesize
+      \renewcommand{\arraystretch}{1.18}
+      \begin{tabular}{ll}
+        \toprule
+        \textbf{Configuração} & \textbf{Valor} \\
+        \midrule
+        Semente aleatória     & 42 \\
+        Folds (CV)            & 5 \\
+        Razão neg. (pos:neg)  & 1:1 \\
+        Datasets de fold      & 40 \\
+        Pares candidatos      & 505.084 \\
+        Parâmetro LPI         & $\beta=0{,}001$ \\
+        Passos (LRW/SRW/PFP)  & $l=3$ \\
+        Avaliações método-fold& 760 \\
+        \bottomrule
+      \end{tabular}}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+% ======================================================================
+\section{Resultados}
+
+\begin{frame}[t]{Desempenho geral — 10 melhores métodos}
+
+  \EspacoAposTitulo
+
+  \dest{SRW-l3} obteve o melhor resultado geral (AP médio $=0{,}9220$),
+  seguido por LPI-beta-0.001 ($0{,}9180$) e RA-CNI ($0{,}9086$).
+
+  \vspace{0.14cm}
+  {\footnotesize
+  \setlength{\tabcolsep}{6pt}
+  \renewcommand{\arraystretch}{1.0}
+  \begin{center}
+  \begin{tabular}{cllrrrrr}
+    \toprule
+    \textbf{\#} & \textbf{Método} & \textbf{Família} &
+    \textbf{AP} & \textbf{AP DP} & \textbf{ROC-AUC} &
+    \textbf{Prec.} & \textbf{NDCG} \\
+    \midrule
+    1  & \dest{SRW-l3} & Quase-local/passeios & \textbf{0,9220} & 0,0835 & \textbf{0,9223} & \textbf{0,8721} & \textbf{0,8948} \\
+    2  & LPI-beta-0.001 & Quase-local/caminhos & 0,9180 & 0,0818 & 0,9192 & 0,8670 & 0,8901 \\
+    3  & RA-CNI & Local aprimorado & 0,9086 & 0,0856 & 0,9106 & 0,8555 & 0,8797 \\
+    4  & PFP-l3 & Quase-local/passeios & 0,9086 & 0,0794 & 0,9139 & 0,8612 & 0,8832 \\
+    5  & LRW-l3 & Quase-local/passeios & 0,8847 & 0,1185 & 0,8863 & 0,8292 & 0,8567 \\
+    6  & RA & Similaridade local & 0,8809 & 0,1231 & 0,8811 & 0,8283 & 0,8574 \\
+    7  & LNB-RA & Bayesiano local & 0,8809 & 0,1230 & 0,8811 & 0,8281 & 0,8573 \\
+    8  & IA2 & Local aprimorado & 0,8800 & 0,1230 & 0,8805 & 0,8278 & 0,8569 \\
+    9  & AA & Similaridade local & 0,8796 & 0,1220 & 0,8801 & 0,8267 & 0,8559 \\
+    10 & FSW & Local aprimorado & 0,8781 & 0,1219 & 0,8787 & 0,8246 & 0,8541 \\
+    \bottomrule
+  \end{tabular}
+  \end{center}}
+
+\end{frame}
+
+\begin{frame}[t]{Desempenho por rede}
+
+  \EspacoAposTitulo
+
+  \begin{columns}[c]
+    \begin{column}{0.64\textwidth}
+      \begin{center}
+        \includegraphics[height=5.35cm,keepaspectratio]{imagens/figuras/fig1_heatmap.png}
+      \end{center}
+      {\scriptsize AP médio de cada método em cada rede (Fig. 1 do artigo).}
+    \end{column}
+    \begin{column}{0.35\textwidth}
+      {\footnotesize
+      \begin{itemize}
+        \setlength{\itemsep}{0.26cm}
+        \item Métodos do topo mantêm AP alto na maioria das redes.
+        \item Queda acentuada nas redes de \dest{infraestrutura}
+        (\textit{power-grid}, \textit{power-1138-bus}).
+        \item A dificuldade depende \dest{tanto do método quanto da
+        estrutura} da rede.
+      \end{itemize}}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}[t]{Significância estatística do ranqueamento}
+
+  \EspacoAposTitulo
+
+  \begin{itemize}
+    \setlength{\itemsep}{\EspacoEntreTopicos}
+
+    \item \textbf{Teste de Friedman} sobre as 8 redes rejeita a hipótese
+    de desempenho igual (estatística $=20{,}55$, $p<0{,}001$).
+
+    \item \textbf{Wilcoxon pareado (correção de Holm)} entre os 4
+    melhores (SRW-l3, LPI-beta-0.001, RA-CNI, PFP-l3):
+    \begin{itemize}
+      \setlength{\itemsep}{0.10cm}
+      \item SRW-l3 \dest{superior} a PFP-l3 e RA-CNI ($p_{adj}=0{,}047$);
+      o mesmo vale para LPI-beta-0.001.
+      \item SRW-l3 vs.\ LPI-beta-0.001: \dest{não significativo}
+      ($p_{adj}=0{,}109$) — embora SRW-l3 tenha maior AP médio em 7 das 8 redes.
+      \item PFP-l3 e RA-CNI: estatisticamente indistinguíveis
+      ($p_{adj}=0{,}945$).
+    \end{itemize}
+
+    \item \textbf{Leitura:} caminhos e passeios curtos oferecem sinais
+    preditivos comparáveis; nenhum método domina por larga margem.
+    Como o teste usa 8 redes, as conclusões são \textit{indicativas}.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]{Melhor método por rede}
+
+  \EspacoAposTitulo
+
+  SRW-l3 foi o melhor em \dest{6 das 8 redes} (e primeiro em 30 dos 40 folds).
+  O desempenho varia fortemente entre domínios.
+
+  \vspace{0.14cm}
+  {\footnotesize
+  \setlength{\tabcolsep}{6pt}
+  \renewcommand{\arraystretch}{1.02}
+  \begin{center}
+  \begin{tabular}{llrrrrr}
+    \toprule
+    \textbf{Rede} & \textbf{Melhor método} &
+    \textbf{AP} & \textbf{AP DP} & \textbf{Prec.} &
+    \textbf{AP médio} & \textbf{Clust.} \\
+    \midrule
+    ego-Facebook       & SRW-l3          & \textbf{0,9959} & 0,0003 & 0,9766 & 0,9781 & 0,606 \\
+    socfb-Middlebury45 & RA              & 0,9549 & 0,0011 & 0,8957 & 0,9313 & 0,282 \\
+    ca-GrQc            & SRW-l3          & 0,9830 & 0,0029 & 0,9677 & 0,9569 & 0,557 \\
+    ca-HepTh           & SRW-l3          & 0,9687 & 0,0019 & 0,9416 & 0,9265 & 0,482 \\
+    email-Eu-core      & SRW-l3          & 0,9564 & 0,0020 & 0,8942 & 0,9197 & 0,407 \\
+    email-univ         & SRW-l3          & 0,9387 & 0,0045 & 0,8738 & 0,8596 & 0,220 \\
+    power-1138-bus     & LPI-beta-0.001  & 0,8126 & 0,0367 & 0,7540 & 0,7125 & 0,087 \\
+    power-grid         & SRW-l3          & 0,7707 & 0,0106 & 0,6783 & 0,6899 & 0,080 \\
+    \bottomrule
+  \end{tabular}
+  \end{center}}
+
+  \vspace{0.10cm}
+  {\scriptsize Redes com maior agrupamento e grau tendem a ser mais
+  fáceis; as de infraestrutura, as mais difíceis.}
+
+\end{frame}
+
+% ======================================================================
+\section{Discussão e conclusão}
+
+\begin{frame}[t]{Respostas às questões de pesquisa}
+
+  \EspacoAposTitulo
+
+  \begin{itemize}
+    \setlength{\itemsep}{\EspacoEntreTopicos}
+
+    \item \textbf{RQ1 — Varia entre domínios?} \dest{Sim.} Desempenho
+    alto em redes sociais e de colaboração; baixo em infraestrutura.
+
+    \item \textbf{RQ2 — Quase-locais superam locais simples?}
+    \dest{Em agregado, sim}, com vantagem de caminhos/passeios curtos —
+    mas não de forma absoluta: RA, AA e CN seguem competitivos.
+
+    \item \textbf{RQ3 — Há método dominante?} SRW-l3 é o melhor geral,
+    porém \dest{sem dominância estatística} por larga margem sobre LPI.
+
+    \item \textbf{RQ4 — Estrutura explica a dificuldade?}
+    \dest{Exploratoriamente, sim}: maior fechamento local e grau médio
+    associam-se a tarefas mais fáceis.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[t]{Conclusão}
+
+  \EspacoAposTitulo
+
+  \begin{itemize}
+    \setlength{\itemsep}{\EspacoEntreTopicos}
+
+    \item Comparação de \dest{19 métodos topológicos} em \dest{8 redes}
+    de 4 domínios, sob protocolo único (5 folds, amostragem balanceada).
+
+    \item \dest{Caminhos e passeios curtos} fornecem informação estrutural
+    útil e maior estabilidade entre domínios; \dest{SRW-l3} teve o melhor
+    AP médio geral.
+
+    \item Métodos locais simples (RA, AA, CN) permanecem
+    \dest{competitivos} e de baixo custo em várias redes.
+
+    \item As propriedades estruturais (grau médio, agrupamento) ajudam a
+    explicar a dificuldade da tarefa — relação a ser lida como
+    \textit{exploratória}.
+  \end{itemize}
+
+  \vspace{0.30cm}
+  \begin{center}
+    {\color{modNavy}\large\textbf{Obrigado!}}\\[0.12cm]
+    {\footnotesize avelars@usp.br \quad$\cdot$\quad maykonwsf@usp.br}
+  \end{center}
 
 \end{frame}
 

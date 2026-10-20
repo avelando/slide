@@ -1,8 +1,18 @@
-# Capa Beamer — tamanhos e posições ajustáveis
+# Slides — Predição de Links em Redes Complexas (KDMiLe 2026)
+
+Apresentação adaptada do artigo *"Comparative Evaluation of Local and
+Quasi-Local Topological Methods for Link Prediction in Complex Networks"*
+(Avelar Rodrigues de Sousa, Maykon Willyam de Sousa Ferreira — ICMC/USP).
 
 ## Compilação
 
 Abra `main.tex` no Overleaf e selecione pdfLaTeX. Em ambiente local, execute duas vezes `pdflatex -interaction=nonstopmode -halt-on-error main.tex` para resolver coordenadas TikZ.
+
+> O preâmbulo carrega o idioma `brazil` do babel quando disponível (ex.: Overleaf)
+> e, caso contrário, usa `english` como fallback — assim o deck compila em
+> qualquer ambiente sem perder os acentos. O pacote `lmodern` também é
+> carregado apenas se estiver instalado. O conteúdo dos slides fica em `main.tex`;
+> a figura do artigo (Figura 1) está em `imagens/figuras/fig1_heatmap.png`.
 
 ## Arquivos
 
